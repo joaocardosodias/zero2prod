@@ -1,0 +1,8 @@
+#configuration.yaml
+application_port: 8000
+database:
+    username: "app"
+    password: "secret"
+    port: 5432
+    host: "127.0.0.1"
+    database_name: "newsletter"
