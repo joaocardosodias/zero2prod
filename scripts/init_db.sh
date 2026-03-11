@@ -57,5 +57,5 @@ sqlx database create
 SCHEMA_QUERY="GRANT ALL ON SCHEMA public TO ${APP_USER};"
 docker exec -i "${CONTAINER_NAME}" psql -U ${SUPERUSER} -d ${APP_DB_NAME} -c "${SCHEMA_QUERY}"
 
-sqlx migrate run
+sqlx migrate run --source ./migrations
 
