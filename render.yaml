@@ -5,3 +5,7 @@ services:
     region: frankfurt
     plan: free
     branch: main
+    envVars:
+      - key: APP_APPLICATION__PORT
+        sync: false
+        value: ${PORT}
