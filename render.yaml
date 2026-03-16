@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: zero2prod
+    env: docker
+    region: frankfurt
+    plan: free
+    branch: main

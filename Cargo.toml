@@ -27,10 +27,11 @@ config = "0.15.19"
 chrono = { version = "0.4.44", default-features = false, features = ["clock"] }
 uuid = { version = "1.21.0", features = ["v4"] }
 env_logger = "0.11.9"
-tracing = {version = "0.1.44", features = ["log"]}
-tracing-subscriber = {version = "0.3.22", features = ["env-filter"]}
+tracing = { version = "0.1.44", features = ["log"] }
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
 tracing-bunyan-formatter = "0.3.10"
 tracing-log = "0.2.0"
+secrecy = { version = "0.8", features = ["serde"] }
+tracing-actix-web = "0.7.21"
 [dev-dependencies]
 reqwest = "0.13.2"
-    
