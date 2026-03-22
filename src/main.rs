@@ -18,8 +18,7 @@ async fn main() -> Result<(), std::io::Error> {
     let connection_pool =
         PgPool::connect_lazy(&configuration.database.connection_string().expose_secret())
             .expect("Failed to connect to database");
-    let listener = TcpListener::bind(address)
-        .expect("Failed to bind address");
+    let listener = TcpListener::bind(address).expect("Failed to bind address");
 
     run(listener, connection_pool)?.await
 }

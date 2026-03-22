@@ -4,3 +4,4 @@ pub mod startup;
 pub mod telemetry;
 
 pub use startup::run;
+pub mod domain;
