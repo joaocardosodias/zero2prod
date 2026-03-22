@@ -1,25 +1,28 @@
+use crate::domain::{NewSubscriber, SubscriberEmail, SubscriberName};
 use actix_web::{HttpResponse, web};
 use chrono::Utc;
 use sqlx::PgPool;
 use tracing::Instrument;
 use uuid::Uuid;
-use crate::domain::{NewSubscriber,SubscriberEmail,SubscriberName};
 
 pub async fn subscribe(form: web::Form<FormData>, connection: web::Data<PgPool>) -> HttpResponse {
-    
-    let new_subscriber=NewSubscriber{
-        name:match SubscriberName::parse(form.name.clone()){
-            Ok(name)=>name,
-            Err(_)=>return HttpResponse::BadRequest().finish(),
-        },
-        email:match SubscriberEmail::parse(form.email.clone()){
-            Ok(email)=>email,
-            Err(_)=>return HttpResponse::BadRequest().finish(),
-        },
+    let new_subscriber = match NewSubscriber::try_from(form.0) {
+        Ok(subscriber) => subscriber,
+        Err(_) => return HttpResponse::BadRequest().finish(),
     };
     match insert_subscriber(&new_subscriber, connection).await {
         Ok(()) => HttpResponse::Ok().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
+    }
+}
+
+impl TryFrom<FormData> for NewSubscriber {
+    type Error = Box<dyn std::error::Error>;
+
+    fn try_from(form: FormData) -> Result<Self, Self::Error> {
+        let name = SubscriberName::parse(form.name)?;
+        let email = SubscriberEmail::parse(form.email)?;
+        Ok(NewSubscriber { name, email })
     }
 }
 

@@ -8,3 +8,8 @@ database:
     port: 5432
     host: "127.0.0.1"
     database_name: "newsletter"
+email_client:
+    base_url: "http://localhost:8000"
+    sender_email: "test@gmail.com"
+    authorization_token: "my_secret_token"
+    timeout_milliseconds: 10000
