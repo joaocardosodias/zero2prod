@@ -5,5 +5,5 @@ pub mod routes;
 pub mod startup;
 pub mod telemetry;
 
-pub use startup::build;
+pub use startup::Application;
 pub use startup::run;

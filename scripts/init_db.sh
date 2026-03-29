@@ -2,8 +2,12 @@
 set -x
 set -eo pipefail
 
-# Garante que binários do cargo estejam no PATH (necessário ao rodar com sudo)
-export PATH="$PATH:/home/kali/.cargo/bin"
+if [ -n "$SUDO_USER" ]; then
+    USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+else
+    USER_HOME=$HOME
+fi
+export PATH="$PATH:$USER_HOME/.cargo/bin"
 
 if ! command -v sqlx &> /dev/null; then
     echo "sqlx is not installed. Please install it by running: cargo install sqlx-cli"
