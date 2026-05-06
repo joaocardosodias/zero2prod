@@ -1,8 +1,7 @@
 use crate::helpers::spawn_app;
-use tracing_subscriber::fmt::init;
+
 #[tokio::test]
 async fn health_check_works() {
-    init();
     let app_address = spawn_app().await;
     let client = reqwest::Client::new();
     let response = client

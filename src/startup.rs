@@ -1,6 +1,5 @@
 use crate::configuration::DatabaseSettings;
 use crate::configuration::Settings;
-use crate::domain::subscriber_email::SubscriberEmail;
 use crate::email_client::EmailClient;
 use crate::routes::health_check::health_check;
 use crate::routes::subscriptions::subscribe;
@@ -21,8 +20,8 @@ pub async fn run(
             .wrap(TracingLogger::default())
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
-            .app_data(connection_pool.clone())
-            .app_data(email_client.clone())
+            .app_data(web::Data::new(connection_pool.clone()))
+            .app_data(web::Data::new(email_client.clone()))
     })
     .listen(listener)?
     .run();
@@ -44,12 +43,13 @@ impl Application {
             "{}:{}",
             configuration.application.host, configuration.application.port
         );
+        
+        let timeout =
+            std::time::Duration::from_millis(configuration.email_client.timeout_milliseconds);
         let sender = configuration
             .email_client
             .sender()
             .expect("Failed to parse sender email");
-        let timeout =
-            std::time::Duration::from_millis(configuration.email_client.timeout_milliseconds);
         let email_client = EmailClient::new(
             configuration.email_client.base_url.clone(),
             sender,
